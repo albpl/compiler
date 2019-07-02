@@ -5,6 +5,10 @@ Compiler for the ALB Programming Language (in current development)
 
 ![build passing](https://img.shields.io/badge/build-passing-brightgreen.svg)
 
+### Found a bug?
+
+Contact us! At alblang.project@gmail.com and we will fix it as soon as possible.
+
 ## The blog
 
 Here you can find information, documentation and lessons related to ALB:
