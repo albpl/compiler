@@ -4,7 +4,7 @@
 	ALB Developers Team (C) 2019
 
 	This software is distributed under the MIT license
-	Visit https://github.com/albertonl/alb/LICENSE for further details
+	Visit https://github.com/albpl/compiler/blob/master/LICENSE for further details
 */
 
 #ifndef ALB_STATEMENT_HPP
