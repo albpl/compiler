@@ -1,4 +1,5 @@
 /*
+	Token class
 	The ALB Programming Language
 	ALB Developers Team (C) 2019
 

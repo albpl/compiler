@@ -1,4 +1,5 @@
 /*
+	Lexer
 	The ALB Programming Language
 	ALB Developers Team (C) 2019
 
@@ -82,7 +83,7 @@ namespace alb_lang {
      */
     static constexpr bool isCharacterNewline(uint32_t codepoint) noexcept ;
     /**
-     * Returns true if codepoint passed represents a character with special meaning in alb.
+     * Returns true if codepoint passed represents a character with special meaning in ALB.
      *
      * These characters are all in the ASCII range, and specifically are:
      * - \c +*-/ for basic math operations
