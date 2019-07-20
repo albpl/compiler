@@ -20,8 +20,10 @@ namespace alb_lang {
    * Provides a storage for all string literals in compilation target.
    */
   class StringStore {
+    friend class Resources;
   private:
     std::vector<std::string> strings{};
+    constexpr StringStore() = default;
   public:
     /**
      * Returns the amount of currently stored string literals.
