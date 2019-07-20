@@ -11,12 +11,17 @@
 
 #include <vector>
 #include <string>
+#include <absl/strings/str_split.h>
+#include <absl/strings/numbers.h>
+#include "CompilerDirectiveChecks.hpp"
 
 namespace alb_lang {
   /**
    * Provides a storage for all string literals in compilation target.
    */
   class StringStore {
+  private:
+    std::vector<std::string> strings{};
   public:
     /**
      * Returns the amount of currently stored string literals.
@@ -45,15 +50,24 @@ namespace alb_lang {
   };
 
   int StringStore::getStringLiteralCount() const {
-    return 0;
+    return strings.size();
   }
 
   std::string StringStore::storeString(const std::string &s) {
-    return std::string();
+    strings.push_back(s);
+    return "::internal::strings::" + std::to_string(strings.size() - 1);
   }
 
   std::string StringStore::getString(const std::string &id) const {
-    return std::string();
+    std::vector<std::string> strParts = absl::StrSplit(id, "::");
+    assertDirectiveIsInternal(strParts);
+    long numStringId = 0;
+    if (strParts.size() < 4 || strParts[2] != "strings" || !absl::SimpleAtoi(strParts[3], &numStringId)) {
+      throw (std::runtime_error{
+          "Given string is not a valid string identifier"
+      });
+    }
+    return strings[numStringId];
   }
 }
 
