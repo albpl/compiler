@@ -16,19 +16,13 @@
 #include <ctime>
 #include <string>
 
-#include "include/alb-statement.hpp" // Statement structure
-#include "include/alb-program.hpp" // Program class and reserved keywords
-using namespace alb_lang;
-
 int main(int argc, char const *argv[]){
-	Program program;
 	if (argc < 2) {
 	  printf("Please provide name of the file to execute as first argument. All other parameters are ignored.");
 	} else {
     const std::string fileName = argv[1];
   }
 
-	//program.readSource(fileName); // Still not implemented
 
 	return 0;
 }
