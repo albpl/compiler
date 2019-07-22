@@ -6,8 +6,8 @@
 */
 
 #include <gtest/gtest.h>
-#include <include/StringStore.hpp>
-#include <include/Resources.hpp>
+#include <StringStore.hpp>
+#include <Resources.hpp>
 
 TEST(StringStore, counter_incrementation) {
   alb_lang::StringStore stringStore = alb_lang::Resources::stringStore();

@@ -7,7 +7,7 @@
 */
 
 #include <gtest/gtest.h>
-#include <include/Lexer.hpp>
+#include <Lexer.hpp>
 
 TEST(tokenizer_tests, tokenizer_tests_constructor_Test) {
   ASSERT_NO_THROW(alb_lang::Lexer{});
