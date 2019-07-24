@@ -11,6 +11,7 @@
 #include "Token.hpp"
 #include <stdexcept>
 #include "Lexer.hpp"
+#include "Resources.hpp"
 
 namespace alb_lang {
 
@@ -170,6 +171,23 @@ namespace alb_lang {
                 continue;
               }
             }
+          }
+
+
+          // Handle strings
+          if (nextChar == '"') {
+            std::string stringData {};
+            while (currindex < dataSize) {
+              if (utf8Data[currindex] != '"') {
+                stringData += utf8Data[currindex++];
+              } else {
+                currindex++;
+                break;
+              }
+            }
+            tokenList.push_back(new BasicToken{Resources::stringStore().storeString(stringData)});
+            startindex = currindex;
+            continue;
           }
 
 
