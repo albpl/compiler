@@ -8,6 +8,7 @@
 #define ALB_RESOURCES_HPP
 
 #include "StringStore.hpp"
+#include "Parser.hpp"
 
 namespace alb_lang {
   class Resources {
@@ -16,6 +17,10 @@ namespace alb_lang {
     static StringStore& stringStore() {
       static StringStore ss {};
       return ss;
+    }
+    static Parser parser() {
+      static Parser p {};
+      return p;
     }
   };
 }
