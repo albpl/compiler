@@ -23,7 +23,7 @@ constexpr uint8_t ELF_HEADER[] = {
     0x3E, 0x00,               // AMD64
     0x01, 0x00, 0x00, 0x00,   // "Current" version
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // Entry point is specified elsewhere
-    0xC0, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // 0x40 (section headers start) + 0x180 (6 section headers per 0x40 bytes) - program headers
+    0x80, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // 0x40 (section headers start) + 0x140 (5 section headers per 0x40 bytes) - program headers
     0x40, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // Section headers begin right after header
     0x00, 0x00, 0x00, 0x00,   // No processor specific flags
     0x40, 0x00,               // Whole elf file header is 64 bytes
@@ -59,15 +59,15 @@ void alb_lang::ElfWriter::write(const std::string& filename, WriterConfig config
     fwrite(bytes, 0x01, 0x40, outFile);
   };
   writeSectionHeader(0x00, 0, 0b00000000, 0, 0, 0); // Zero section
-  writeSectionHeader(0x01, 3, 0b00000000, 0, 0x0230, 0x1C); // .shstrtab
-  writeSectionHeader(0x0B, 8, 0b00000011, DEFAULT_DATA_START_POINT, 0x024C, config.bss_size); // .bss
-  writeSectionHeader(0x10, 1, 0b00000011, DEFAULT_DATA_START_POINT + config.bss_size, 0x024D, config.data.size()); // .data
-  writeSectionHeader(0x16, 1, 0b00000110, DEFAULT_DATA_START_POINT - config.text.size(), 0x024D + config.data.size(), config.text.size()); // .text
+  writeSectionHeader(0x01, 3, 0b00000000, 0, 0x01F0, 0x1C); // .shstrtab
+  writeSectionHeader(0x0B, 8, 0b00000011, DEFAULT_DATA_START_POINT, 0x020C, config.bss_size); // .bss
+  writeSectionHeader(0x10, 1, 0b00000011, DEFAULT_DATA_START_POINT + config.bss_size, 0x020C, config.data.size()); // .data
+  writeSectionHeader(0x16, 1, 0b00000110, DEFAULT_DATA_START_POINT - config.text.size(), 0x020C + config.data.size(), config.text.size()); // .text
 
   uint8_t segment1[] = {
       0x01, 0x00, 0x00, 0x00, // Segment loaded into memory
       0x06, 0x00, 0x00, 0x00, // Read-write
-      0x4C, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // The program headers resist at 0x01C0, + 0x70 of the headers themselves + 0x1C of strings
+      0x0C, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // The program headers resist at 0x0180, + 0x70 of the headers themselves + 0x1C of strings
       0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // Set up just below - memory address
       0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // We are just ignoring physical addressing
       0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // Set up just below - size in file
@@ -75,7 +75,7 @@ void alb_lang::ElfWriter::write(const std::string& filename, WriterConfig config
       0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // No alignment necessary
   };
   ((uint64_t*)segment1)[2] = DEFAULT_DATA_START_POINT;
-  ((uint64_t*)segment1)[4] = config.data.size() + 1; // +1 for bss
+  ((uint64_t*)segment1)[4] = config.data.size(); // +1 for bss
   ((uint64_t*)segment1)[5] = config.data.size() + config.bss_size;
 
 
@@ -89,7 +89,7 @@ void alb_lang::ElfWriter::write(const std::string& filename, WriterConfig config
       0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // Set up just below - size in memory
       0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // No alignment necessary
   };
-  ((uint64_t*)segment2)[1] = 0x024D + config.data.size();
+  ((uint64_t*)segment2)[1] = 0x020C + config.data.size();
   ((uint64_t*)segment2)[2] = DEFAULT_DATA_START_POINT - config.text.size();
   ((uint64_t*)segment2)[4] = config.text.size();
   ((uint64_t*)segment2)[5] = config.text.size();
@@ -104,7 +104,6 @@ void alb_lang::ElfWriter::write(const std::string& filename, WriterConfig config
   };
 
   fwrite(strings, 0x01, sizeof(strings), outFile);
-  fwrite(strings, 0x01, 0x01, outFile); // write an empty byte for bss
   fwrite(config.data.data(), 0x01, config.data.size(), outFile);
   fwrite(config.text.data(), 0x01, config.text.size(), outFile);
   fseek(outFile, 24, SEEK_SET);
