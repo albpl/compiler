@@ -4,14 +4,11 @@
 	This software is distributed under the MIT license
 	Visit https://github.com/albertonl/alb/LICENSE for further details
 */
-#ifndef ALB_COMPILERDIRECTIVECHECKS_HPP
-#define ALB_COMPILERDIRECTIVECHECKS_HPP
 
 #include <string>
 #include <vector>
 #include <stdexcept>
 #include <absl/strings/str_split.h>
-#include "CompilerDirectiveChecks.hpp"
 
 namespace alb_lang {
 
@@ -42,7 +39,4 @@ namespace alb_lang {
   void assertDirectiveIsInternal(const std::string &directive) noexcept(false) {
     assertDirectiveIsInternal(absl::StrSplit(directive, "::", absl::AllowEmpty{}));
   }
-
-
 }
-#endif //ALB_COMPILERDIRECTIVECHECKS_HPP
