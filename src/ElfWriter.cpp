@@ -61,8 +61,8 @@ void alb_lang::ElfWriter::write(const std::string& filename, WriterConfig config
   writeSectionHeader(0x00, 0, 0b00000000, 0, 0, 0); // Zero section
   writeSectionHeader(0x01, 3, 0b00000000, 0, 0x01F0, 0x1C); // .shstrtab
   writeSectionHeader(0x0B, 8, 0b00000011, DEFAULT_DATA_START_POINT, 0x020C, config.bss_size); // .bss
-  writeSectionHeader(0x10, 1, 0b00000011, DEFAULT_DATA_START_POINT + config.bss_size, 0x020C, config.data.size()); // .data
-  writeSectionHeader(0x16, 1, 0b00000110, DEFAULT_DATA_START_POINT - config.text.size(), 0x020C + config.data.size(), config.text.size()); // .text
+  writeSectionHeader(0x10, 1, 0b00000011, DEFAULT_DATA_START_POINT + config.bss_size + 1, 0x020C, config.data.size()); // .data
+  writeSectionHeader(0x16, 1, 0b00000110, DEFAULT_DATA_START_POINT - config.text.size() - 1, 0x020C + config.data.size(), config.text.size()); // .text
 
   uint8_t segment1[] = {
       0x01, 0x00, 0x00, 0x00, // Segment loaded into memory
@@ -75,8 +75,9 @@ void alb_lang::ElfWriter::write(const std::string& filename, WriterConfig config
       0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // No alignment necessary
   };
   ((uint64_t*)segment1)[2] = DEFAULT_DATA_START_POINT;
-  ((uint64_t*)segment1)[4] = config.data.size(); // +1 for bss
-  ((uint64_t*)segment1)[5] = config.data.size() + config.bss_size;
+  ((uint64_t*)segment1)[3] = DEFAULT_DATA_START_POINT;
+  ((uint64_t*)segment1)[4] = config.data.size();
+  ((uint64_t*)segment1)[5] = config.data.size() + config.bss_size + 1; // +1 for bss
 
 
   uint8_t segment2[] = {
@@ -90,7 +91,8 @@ void alb_lang::ElfWriter::write(const std::string& filename, WriterConfig config
       0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // No alignment necessary
   };
   ((uint64_t*)segment2)[1] = 0x020C + config.data.size();
-  ((uint64_t*)segment2)[2] = DEFAULT_DATA_START_POINT - config.text.size();
+  ((uint64_t*)segment2)[2] = DEFAULT_DATA_START_POINT - config.text.size() - 1;
+  ((uint64_t*)segment2)[3] = DEFAULT_DATA_START_POINT - config.text.size() - 1;
   ((uint64_t*)segment2)[4] = config.text.size();
   ((uint64_t*)segment2)[5] = config.text.size();
 
@@ -107,7 +109,7 @@ void alb_lang::ElfWriter::write(const std::string& filename, WriterConfig config
   fwrite(config.data.data(), 0x01, config.data.size(), outFile);
   fwrite(config.text.data(), 0x01, config.text.size(), outFile);
   fseek(outFile, 24, SEEK_SET);
-  const auto textStart = (uint64_t) (DEFAULT_DATA_START_POINT - config.text.size());
+  const auto textStart = (uint64_t) (DEFAULT_DATA_START_POINT - config.text.size() - 1);
   fwrite(&textStart, 0x01, 0x08, outFile);
   fclose(outFile);
 }
