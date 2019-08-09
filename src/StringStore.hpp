@@ -18,16 +18,19 @@ namespace alb_lang {
    */
   class StringStore {
     friend class Resources;
+
   private:
     std::vector<std::string> strings{};
+
     constexpr StringStore() = default;
+
   public:
     /**
      * Returns the amount of currently stored string literals.
      *
      * @return The amount of string literals.
      */
-    int getStringLiteralCount() const;
+    [[nodiscard]] int getStringLiteralCount() const;
 
     /**
      * Stores a string in this storage.
@@ -45,7 +48,7 @@ namespace alb_lang {
      * @param id The id for the string literal, as returned by \c storeString
      * @return The actual string literal
      */
-    std::string getString(const std::string &id) const;
+    [[nodiscard]] std::string getString(const std::string &id) const;
   };
 }
 

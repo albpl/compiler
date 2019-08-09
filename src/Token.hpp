@@ -38,7 +38,7 @@ namespace alb_lang {
      *
      * @return The text contents itself.
      */
-    virtual const std::string& getTextContents() const = 0;
+    virtual const std::string &getTextContents() const = 0;
   };
 }
 

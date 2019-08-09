@@ -8,14 +8,21 @@
 #define ALB_RESOURCES_HPP
 
 #include "StringStore.hpp"
+#include "LabelFactory.hpp"
 
 namespace alb_lang {
   class Resources {
   public:
     Resources() = delete;
-    static StringStore& stringStore() {
-      static StringStore ss {};
+
+    static StringStore &stringStore() {
+      static StringStore ss{};
       return ss;
+    }
+
+    static LabelFactory &labelFactory() {
+      static LabelFactory lf{};
+      return lf;
     }
   };
 }

@@ -1,2 +1,2 @@
-add_library(alb Token.hpp tokens/BasicToken.hpp Lexer.hpp StringStore.hpp CompilerDirectiveChecks.hpp Resources.hpp CompilerDirectiveChecks.cpp Lexer.cpp StringStore.cpp)
+add_library(alb Token.hpp tokens/BasicToken.hpp Lexer.hpp StringStore.hpp CompilerDirectiveChecks.hpp Resources.hpp CompilerDirectiveChecks.cpp Lexer.cpp StringStore.cpp ElementaryOperation.hpp platform/x64/ops/Mov.cpp platform/x64/ops/Mov.hpp platform/x64/Registers.hpp PrettyAsm.cpp PrettyAsm.hpp ExecutableOperation.hpp Function.cpp Function.hpp platform/x64/ops/Syscall.cpp platform/x64/ops/Syscall.hpp Label.cpp Label.hpp LabelFactory.cpp LabelFactory.hpp)
 target_link_libraries(alb absl::strings)

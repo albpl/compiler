@@ -22,7 +22,8 @@ namespace alb_lang {
      * @param textContents Text this Token encapsulates
      */
     explicit BasicToken(std::string textContents) : textContents(std::move(textContents)) {}
-    const std::string &getTextContents() const override {
+
+    [[nodiscard]] const std::string &getTextContents() const override {
       return textContents;
     }
   };

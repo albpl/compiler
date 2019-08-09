@@ -124,7 +124,7 @@ namespace alb_lang {
       const uint32_t thirdByteBits = utf8Data[currindex++] & 0b00111111u;
       return (firstByteBits << 12u) + (secondByteBits << 6u) + thirdByteBits;
     }
-    if ((utf8Data[currindex] &0b11111000u) == 0b11110000u) {
+    if ((utf8Data[currindex] & 0b11111000u) == 0b11110000u) {
       const uint32_t firstByteBits = utf8Data[currindex++] & 0b00000111u;
       const uint32_t secondByteBits = utf8Data[currindex++] & 0b00111111u;
       const uint32_t thirdByteBits = utf8Data[currindex++] & 0b00111111u;
@@ -134,11 +134,11 @@ namespace alb_lang {
     throw std::runtime_error{"Invalid UTF-8 data."};
   }
 
-  void Lexer::tokenizeUTF8(char *utf8Data, uint64_t dataSize, std::vector<Token*> &tokenList) {
-    uint64_t startindex=0, endindex= 0, currindex = 0;
+  void Lexer::tokenizeUTF8(char *utf8Data, uint64_t dataSize, std::vector<Token *> &tokenList) {
+    uint64_t startindex = 0, endindex = 0, currindex = 0;
     while (currindex < dataSize) {
       endindex = currindex - 1;
-      uint32_t nextChar = getNextChar((unsigned char*)(utf8Data), currindex);
+      uint32_t nextChar = getNextChar((unsigned char *) (utf8Data), currindex);
       if (isCharacterWhitespace(nextChar) || isCharacterSpecialMeaning((nextChar))) {
         if (!(endindex < startindex || endindex == UINT64_MAX)) {
           tokenList.push_back(new BasicToken{std::string{(char *) utf8Data + startindex, endindex - startindex + 1}});
@@ -151,18 +151,18 @@ namespace alb_lang {
           if (nextChar == '/') {
             if (currindex < dataSize) {
               uint64_t tempCurrindex = currindex;
-              uint32_t nextNextChar = getNextChar((unsigned char*)(utf8Data), tempCurrindex);
+              uint32_t nextNextChar = getNextChar((unsigned char *) (utf8Data), tempCurrindex);
               if (nextNextChar == '/' || nextNextChar == '*') {
-                getNextChar((unsigned char*)utf8Data, currindex); // To get currindex past nextNextChar
+                getNextChar((unsigned char *) utf8Data, currindex); // To get currindex past nextNextChar
                 while (currindex < dataSize) {
-                  uint32_t nextInCommentChar = getNextChar((unsigned char*)utf8Data, currindex);
+                  uint32_t nextInCommentChar = getNextChar((unsigned char *) utf8Data, currindex);
                   if (nextNextChar == '/' && isCharacterNewline(nextInCommentChar)) {
                     break;
                   } else if (nextNextChar == '*' && nextInCommentChar == '*') {
                     uint64_t anotherTempCurrIndex = currindex;
-                    uint32_t nextNextInCommentChar = getNextChar((unsigned char*) utf8Data, anotherTempCurrIndex);
+                    uint32_t nextNextInCommentChar = getNextChar((unsigned char *) utf8Data, anotherTempCurrIndex);
                     if (nextNextInCommentChar == '/') {
-                      getNextChar((unsigned char*) utf8Data, currindex); // To get currindex past nextNextInCommentChar
+                      getNextChar((unsigned char *) utf8Data, currindex); // To get currindex past nextNextInCommentChar
                       break;
                     }
                   }
@@ -176,7 +176,7 @@ namespace alb_lang {
 
           // Handle strings
           if (nextChar == '"') {
-            std::string stringData {};
+            std::string stringData{};
             while (currindex < dataSize) {
               if (utf8Data[currindex] != '"') {
                 stringData += utf8Data[currindex++];
@@ -191,7 +191,7 @@ namespace alb_lang {
           }
 
 
-          tokenList.push_back(new BasicToken{std::string{(char)nextChar}});
+          tokenList.push_back(new BasicToken{std::string{(char) nextChar}});
         }
       }
     }
