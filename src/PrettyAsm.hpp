@@ -10,11 +10,14 @@
 #include <string>
 #include "platform/x64/Registers.hpp"
 #include <cstdint>
+#include "Label.hpp"
 
 namespace alb_lang {
   [[nodiscard]] std::string prettifyAsm(const std::string &instructionName, Register r, uint64_t literal);
 
   [[nodiscard]] std::string prettifyAsm(const std::string &instructionName);
+
+  [[nodiscard]] std::string prettifyAsm(const std::string& instructionName, Register r, const Label& label);
 }
 
 #endif //ALB_PRETTYASM_HPP

@@ -9,6 +9,7 @@
 
 #include "StringStore.hpp"
 #include "LabelFactory.hpp"
+#include "ProgramSpace.hpp"
 
 namespace alb_lang {
   class Resources {
@@ -23,6 +24,11 @@ namespace alb_lang {
     static LabelFactory &labelFactory() {
       static LabelFactory lf{};
       return lf;
+    }
+
+    static ProgramSpace &programSpace() {
+      static ProgramSpace ps{};
+      return ps;
     }
   };
 }

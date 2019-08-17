@@ -20,3 +20,7 @@ std::vector<alb_lang::ElementaryOperation> alb_lang::Function::flatten() const {
 void alb_lang::Function::addStep(const ExecutableOperation &step) {
   steps.push_back(step);
 }
+
+int alb_lang::Function::getParamAmount() const {
+  return paramAmount;
+}

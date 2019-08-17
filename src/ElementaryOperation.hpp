@@ -14,7 +14,7 @@
 #include "ExecutableOperation.hpp"
 
 namespace alb_lang {
-  class ElementaryOperation : ExecutableOperation {
+  class ElementaryOperation : public ExecutableOperation {
   public:
     [[nodiscard]] std::vector<ElementaryOperation> flatten() const override {
       std::vector<ElementaryOperation> ret{};

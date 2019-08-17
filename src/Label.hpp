@@ -14,7 +14,7 @@
 #include <cstdint>
 
 namespace alb_lang {
-  class Label : ElementaryOperation {
+  class Label : public ElementaryOperation {
     friend class LabelFactory;
 
   public:
@@ -24,9 +24,12 @@ namespace alb_lang {
 
     [[nodiscard]] const std::string &getAsmCode() const override;
 
+    [[nodiscard]] const std::string &getName() const;
+
   private:
     explicit Label(const std::string &name);
 
+    const std::string name;
     const std::vector<uint8_t> bytes{};
     const std::string asmCode;
   };

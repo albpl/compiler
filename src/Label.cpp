@@ -23,4 +23,8 @@ const std::string &alb_lang::Label::getAsmCode() const {
   return asmCode;
 }
 
-alb_lang::Label::Label(const std::string &name) : asmCode(prettifyAsm(name + ":")) {}
+alb_lang::Label::Label(const std::string &name) : asmCode(prettifyAsm(name + ":")), name(name) {}
+
+const std::string &alb_lang::Label::getName() const {
+  return name;
+}

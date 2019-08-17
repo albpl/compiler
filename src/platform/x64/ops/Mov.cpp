@@ -11,6 +11,7 @@
 #include <vector>
 #include "../../../PrettyAsm.hpp"
 #include <stdexcept>
+#include "../../../Label.hpp"
 
 const std::string &alb_lang::Mov::getDebugString() const {
   return asmCode;
@@ -26,3 +27,6 @@ const std::string &alb_lang::Mov::getAsmCode() const {
 
 alb_lang::Mov::Mov(alb_lang::Register target_register, int64_t literal) : asmCode(
     prettifyAsm("MOV", target_register, literal)), bytes({0}) {}
+
+alb_lang::Mov::Mov(alb_lang::Register target_register, const Label& label) : asmCode(
+    prettifyAsm("MOV", target_register, label)), bytes({0}) {}

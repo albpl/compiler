@@ -16,12 +16,16 @@ namespace alb_lang {
   class Function : ExecutableOperation {
   public:
     Function() = default;
+    explicit Function(int paramAmount) : paramAmount(paramAmount) { };
 
     [[nodiscard]] std::vector<ElementaryOperation> flatten() const override;
 
     void addStep(const ExecutableOperation &step);
 
+    [[nodiscard]] int getParamAmount() const;
+
   private:
+    const int paramAmount = 0;
     std::vector<ExecutableOperation> steps{};
   };
 }

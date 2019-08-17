@@ -13,11 +13,13 @@
 #include "../Registers.hpp"
 #include <string>
 #include <vector>
+#include "../../../Label.hpp"
 
 namespace alb_lang {
-  class Mov : ElementaryOperation {
+  class Mov : public ElementaryOperation {
   public:
     Mov(Register target_register, int64_t literal);
+    Mov(Register target_register, const Label& label);
 
     [[nodiscard]] const std::string &getDebugString() const override;
 
